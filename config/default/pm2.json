@@ -1,0 +1,6 @@
+[{
+    "name": "notifier",
+    "script": "./node_modules/vakoo/index.coffee",
+    "error_file": "./logs/worker_err.log",
+    "out_file": "./logs/worker_out.log"
+}]
