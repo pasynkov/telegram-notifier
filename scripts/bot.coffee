@@ -29,6 +29,9 @@ class Bot
             if err
               return @bot.sendMessage message.chat.id, "Mongo err: `#{err}`"
 
+            unless orders.length
+              return @bot.sendMessage message.chat.id, "Not found orders"
+
             @logger.info "Finded `#{orders.length}` with option `#{option}`. Sending"
 
             list = _.map(
