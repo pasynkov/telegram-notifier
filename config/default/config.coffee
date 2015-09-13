@@ -7,6 +7,9 @@ module.exports = {
 
     redis: {}
 
+    mongo:
+      name: "luxy"
+
   subscribe: {
     luxyOrder: {
       script: "luxy_order"
@@ -14,6 +17,9 @@ module.exports = {
       redis: "main"
     }
   }
+
+  loggers:
+    bot: {}
 
 
   bot: {
