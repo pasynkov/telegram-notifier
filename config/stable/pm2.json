@@ -1,7 +1,7 @@
 [{
     "name": "notifier",
     "script": "./node_modules/vakoo/index.coffee",
-    "args": ["run", "-s", "bot"],
+    "args": ["run", "-s", "bot", "-e", "stable"],
     "error_file": "./logs/worker_err.log",
     "out_file": "./logs/worker_out.log"
 }]
