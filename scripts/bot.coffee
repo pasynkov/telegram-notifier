@@ -2,6 +2,7 @@
 TelegramBot = require "node-telegram-bot-api"
 
 _ = require "underscore"
+request = require "request"
 
 class Bot
 
@@ -91,6 +92,47 @@ class Bot
                 return @bot.sendMessage message.chat.id, "Mongo err: `#{err}`"
 
               return @bot.sendMessage message.chat.id, "Set status `cancelled` to order `#{option}` successfully"
+
+        when "/send"
+          @logger.info "Send command. Set `sent` status to order `#{option}`"
+          vakoo.mongo.collection("orders").findOne {_id: option}, (err, order)=>
+            if err
+              return @bot.sendMessage message.chat.id, "Mongo err: `#{err}`"
+
+            unless order
+              return @bot.sendMessage message.chat.id, "Not found order `#{option}`"
+
+            request.post {
+                url: "http://uslada-shop.ru/lxsx.php"
+                form: {
+                  key: "sdifg7s9d8hi3w4r"
+                  name: order.fullname
+                  phone: order.phone
+                  city: order.address.city
+                  address: """
+                    #{order.address.code}, #{order.address.region}, #{order.address.city}.
+                    #{order.address.street}, д. #{order.address.house}, #{if order.address.block then "корп. #{order.address.block}," else ""} кв. #{order.address.flat}
+                  """
+                  products: _.map(
+                    order.products
+                    (product)->
+                      "#{product.distributor_sku}:#{product.count}"
+                  )
+                }
+              }, (err, res, body)=>
+                if err
+                  return @bot.sendMessage message.chat.id, "Request err: `#{err}`"
+                else
+                  vakoo.mongo.collectionNative("orders").update {_id: order._id}, {$set: {status: "sent"}}, (err)=>
+                    if err
+                      return @bot.sendMessage message.chat.id, "Mongo err: `#{err}`"
+                    return @bot.sendMessage message.chat.id, "Set status `sent` to order `#{option}` successfully"
+
+
+        else
+          return @bot.sendMessage message.chat.id, "Unknown command `#{command}`"
+
+
 
 
 module.exports = Bot
