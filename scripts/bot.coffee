@@ -116,7 +116,7 @@ class Bot
                   products: _.map(
                     order.products
                     (product)->
-                      "#{product.distributor_sku}:#{product.count}"
+                      "#{product.sku}:#{product.count}"
                   )
                 }
               }, (err, res, body)=>
