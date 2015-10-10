@@ -118,6 +118,9 @@ class Bot
                     (product)->
                       "#{product.sku}:#{product.count}"
                   )
+                  shipping: order.delivery
+                  payment: order.payment
+                  comment: order.comment
                 }
               }, (err, res, body)=>
                 if err
