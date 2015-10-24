@@ -5,7 +5,10 @@ module.exports = {
   storage:
     enable: true
 
-    redis: {}
+    redis:
+      enable: true
+      host: "db.vakoo.ru"
+      password: "085bdb2261"
 
     mongo:
       name: "luxy"
