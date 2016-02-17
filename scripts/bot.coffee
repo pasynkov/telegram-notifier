@@ -53,6 +53,17 @@ class Bot
             unless order
               return @bot.sendMessage message.chat.id, "Not found order `#{option}`"
 
+            payments = [
+              "Robokassa"
+              "On delivery"
+            ]
+
+            deliveries = [
+              "Courier"
+              "Pickpoint"
+              "Russian Post"
+            ]
+
             @bot.sendMessage message.chat.id, """
               #{order.fullname}
               #{order.contact}
@@ -60,7 +71,8 @@ class Bot
               comment: #{order.comment}
               count: #{order.productCount}
               total: #{order.total}
-              link: http://www.luxy.sexy/admin/?task=shop.orders%2Fitem&id=#{order._id}
+              payment: #{payments[+order.payment]}
+              delivery: #{deliveries[+order.delivery]}
             """
 
         when "/spam"
